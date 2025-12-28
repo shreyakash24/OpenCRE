@@ -34,13 +34,10 @@ upstream-sync:
 dev-flask:
 	. ./venv/bin/activate && INSECURE_REQUESTS=1 FLASK_APP=`pwd`/cre.py  FLASK_CONFIG=development flask run
 
-dev-flask-docker:
-	. ./venv/bin/activate && INSECURE_REQUESTS=1 FLASK_APP=`pwd`/cre.py  FLASK_CONFIG=development flask run --host=0.0.0.0
-
 e2e:
 	yarn build
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py" &&\
+	export FLASK_APP=$(CURDIR)/cre.py &&\
 	export FLASK_CONFIG=development &&\
 	export INSECURE_REQUESTS=1 &&\
 	flask run &
@@ -52,7 +49,7 @@ e2e:
 
 test:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py" &&\
+	export FLASK_APP=$(CURDIR)/cre.py &&\
 	flask routes && flask test
 
 cover:
@@ -86,7 +83,7 @@ docker-prod:
 	docker build -f Dockerfile -t opencre:$(shell git rev-parse HEAD) .
 
 docker-dev-run:
-	docker run -it -p 127.0.0.1:5000:5000 opencre-dev:$(shell git rev-parse HEAD)
+	 docker run -it -p 5000:5000 opencre-dev:$(shell git rev-parse HEAD)
 
 docker-prod-run:
 	 docker run -it -p 5000:5000 opencre:$(shell git rev-parse HEAD)
@@ -107,12 +104,12 @@ clean:
 
 migrate-upgrade:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py"
+	export FLASK_APP=$(CURDIR)/cre.py 
 	flask db upgrade  
 
 migrate-downgrade:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py"
+	export FLASK_APP=$(CURDIR)/cre.py
 	flask db downgrade
 
 import-projects:
@@ -123,7 +120,7 @@ import-all:
 
 import-neo4j:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py" && python cre.py --populate_neo4j_db
+	export FLASK_APP=$(CURDIR)/cre.py && python cre.py --populate_neo4j_db
 
 preload-map-analysis:
 	$(shell RUN_COUNT=5 bash ./scripts/preload_gap_analysis.sh)
