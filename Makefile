@@ -31,11 +31,12 @@ start-worker:
 upstream-sync:
 	. ./venv/bin/activate && python cre.py --upstream_sync
 
+PORT?=5000
 dev-flask:
-	. ./venv/bin/activate && INSECURE_REQUESTS=1 FLASK_APP=`pwd`/cre.py  FLASK_CONFIG=development flask run
+	. ./venv/bin/activate && INSECURE_REQUESTS=1 FLASK_APP=`pwd`/cre.py  FLASK_CONFIG=development flask run --port $(PORT)
 
 dev-flask-docker:
-	. ./venv/bin/activate && INSECURE_REQUESTS=1 FLASK_APP=`pwd`/cre.py  FLASK_CONFIG=development flask run --host=0.0.0.0
+	. ./venv/bin/activate && INSECURE_REQUESTS=1 FLASK_APP=`pwd`/cre.py  FLASK_CONFIG=development flask run --host=0.0.0.0 --port $(PORT)
 
 e2e:
 	yarn build
@@ -107,7 +108,7 @@ clean:
 
 migrate-upgrade:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py" 
+	export FLASK_APP="$(CURDIR)/cre.py"
 	flask db upgrade  
 
 migrate-downgrade:
