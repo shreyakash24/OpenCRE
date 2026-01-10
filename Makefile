@@ -107,12 +107,12 @@ clean:
 
 migrate-upgrade:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py" 
+	export FLASK_APP="$(CURDIR)/cre.py" &&\
 	flask db upgrade  
 
 migrate-downgrade:
 	[ -d "./venv" ] && . ./venv/bin/activate &&\
-	export FLASK_APP="$(CURDIR)/cre.py"
+	export FLASK_APP="$(CURDIR)/cre.py" &&\
 	flask db downgrade
 
 import-projects:
